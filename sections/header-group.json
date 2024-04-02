@@ -1,19 +1,15 @@
 {
-  "name": "Header Group",
+  "name": "t:sections.header.name",
   "type": "header",
   "sections": {
     "header": {
-      "type": "dev__header"
-    },
-    "announcement-bar": {
-      "type": "dev__announcement-bar",
+      "type": "header",
       "settings": {
-        "animation_duration": 4
+        "menu": ""
       }
     }
   },
   "order": [
-    "announcement-bar",
     "header"
   ]
 }

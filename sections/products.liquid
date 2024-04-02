@@ -1,0 +1,56 @@
+<section class="products">
+  <div class="products__container">
+    <div class="products__grid">
+      {% for product in section.settings.products %}
+        <div class="product">
+          <div class="product__image">
+            <a href="{{ product.url }}">
+              {{ product.featured_image | img_url: '285x300' | img_tag: product.featured_image.alt }}
+            </a>
+          </div>
+
+          <div class="product__bottom">
+            
+            <h3 class="product__name">
+              <a href="{{ product.url }}">{{ product.title }}</a>
+            </h3>
+              
+            {% if product.description != null and product.description != "" %}
+              <div class="product__desc">
+                <p>{{ product.description }}</p>
+              </div>
+            {% endif %}
+
+            <div class="product__price">{{ product.price | money_without_trailing_zeros }}</div>
+          </div>
+
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "t:sections.products.name",
+    "tag": "section",
+    "class": "section-products",
+
+    "settings": [
+      {
+        "type": "product_list",
+        "id": "products",
+        "label": "t:sections.products.select"
+      }
+    ],
+
+
+
+    "presets": [
+      {
+        "name": "Product slider"
+      }
+    ]
+
+  }
+{% endschema %}

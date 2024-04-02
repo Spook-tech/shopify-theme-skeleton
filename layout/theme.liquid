@@ -7,6 +7,14 @@
     <meta name="theme-color" content="{{ settings.primary_color }}">
     <link rel="canonical" href="{{ canonical_url }}">
 
+    {{ 'null.css' | asset_url | stylesheet_tag }}
+    {{ 'base.css' | asset_url | stylesheet_tag }}
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">    
+
     {%- if settings.favicon != blank -%}
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
     {%- endif -%}
@@ -22,32 +30,6 @@
       <meta name="description" content="{{ page_description | escape }}">
     {% endif %}
 
-    {% render 'meta-tags' %}
-    {% if settings.tailwind_enabled %}
-      {% if request.design_mode %}
-        <script>
-          document.addEventListener("DOMContentLoaded", function() {
-            document.body.style.opacity = "1";
-          });
-        </script>
-        
-        {% # theme-check-disable %}
-        <script src="https://cdn.tailwindcss.com"></script>
-        {% # theme-check-enable %}
-        <script>
-          document.addEventListener('DOMContentLoaded', function() {
-            {{ settings.tailwind_config }}
-          });
-        </script>   
-        <style type='text/tailwindcss'>
-          {{ settings.tailwind_css }}
-        </style>             
-      {% else %}
-      {{ 'output.css' | asset_url | stylesheet_tag }}
-      {% endif %}
-    {% else %}      
-      {{ 'base.css' | asset_url | stylesheet_tag }}
-    {% endif %}
         
     <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
 
@@ -75,32 +57,16 @@
     {% endstyle %}
   </head>
 
-  <body {% if settings.tailwind_enabled and request.design_mode %}style="opacity:0;transition:0.1s ease;"{% endif %}>
+  <body>
     <a class="skip-to-content-link button visually-hidden" href="#MainContent">
       {{ 'accessibility.skip_to_text' | t }}
     </a>
-
-    {% if settings.initial_modal_enabled and template == 'index' %}
-      {% section 'dev__modal' %}
-    {% endif %}
-
-
-    {% comment %}
-      {% section 'dev__announcement-bar' %}
-      {% section 'dev__header' %}
-    {% endcomment %}
 
     {% sections 'header-group' %}
 
     <main id="MainContent" class="content-for-layout focus-none" role="main">
       {{ content_for_layout }}
     </main>
-
-    {% sections 'footer-group' %}
-
-    {% comment %} {% sections 'drawer-group' %} {% endcomment %}
-
-    {% sections 'overlay-group' %}
 
     <ul hidden>
       <li id="a11y-refresh-page-message">{{ 'accessibility.refresh_page' | t }}</li>

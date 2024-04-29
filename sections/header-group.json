@@ -7,9 +7,18 @@
       "settings": {
         "menu": ""
       }
+    },
+    "products_bHTrEr": {
+      "type": "products",
+      "settings": {
+        "products": [
+
+        ]
+      }
     }
   },
   "order": [
-    "header"
+    "header",
+    "products_bHTrEr"
   ]
 }

@@ -30,9 +30,6 @@
       <meta name="description" content="{{ page_description | escape }}">
     {% endif %}
 
-        
-    <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
-
     {{ content_for_header }}
 
     <script>
@@ -72,5 +69,9 @@
       <li id="a11y-refresh-page-message">{{ 'accessibility.refresh_page' | t }}</li>
       <li id="a11y-new-window-message">{{ 'accessibility.link_messages.new_window' | t }}</li>
     </ul>
+
+
+
+    <script src="{{ 'script.js' | asset_url }}" defer="defer"></script>
   </body>
 </html>

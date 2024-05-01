@@ -12,7 +12,10 @@
       "type": "products",
       "settings": {
         "products": [
-
+          "gift-card",
+          "the-3p-fulfilled-snowboard",
+          "the-collection-snowboard-liquid",
+          "the-collection-snowboard-hydrogen"
         ]
       }
     }

@@ -4,9 +4,21 @@
       "type": "main-index",
       "settings": {
       }
+    },
+    "products_437Y3h": {
+      "type": "products",
+      "settings": {
+        "products": [
+          "gift-card",
+          "selling-plans-ski-wax",
+          "the-3p-fulfilled-snowboard",
+          "the-collection-snowboard-hydrogen"
+        ]
+      }
     }
   },
   "order": [
-    "main-index"
+    "main-index",
+    "products_437Y3h"
   ]
 }

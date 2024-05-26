@@ -1,50 +1,172 @@
-<header class="header">
-  <div class="header__container">
-    <div class="header__row">
+{% liquid 
+    if section.settings.menu.links == blank
+        assign main_menu_linklist = linklists[section.settings.menu].links
+    else
+        assign main_menu_linklist = section.settings.menu.links
+    endif
+%}
 
-      <div class="header__logo">
-        {% comment %} <img src="" alt=""> {% endcomment %}
-      </div>
+<div class="relative bg-white" x-data="{ mobileMenuOpen: false, searchBarOpen: false }" x-cloak>
+    <div class="mx-auto px-4 sm:px-6">
+        <div class="flex justify-center items-center py-6 md:justify-start md:space-x-10">
+            <!-- STORE NAME / STORE LOGO -->
+            <div class="flex justify-start lg:flex-1 truncate">
+                <h1 class="text-xl font-bold truncate">{{ shop.name }}</h1>
+            </div>
 
-      <nav class="header__nav">
-        <ul class="header__list">
-          {% for link in linklists.main-menu.links -%}
-            <li class="header__link">
-              {{ link.title | link_to: link.url }}
-            </li>
-          {%- endfor %}
-        </ul>
-      </nav>
+            <div class="-mr-2 -my-2 ml-3 md:hidden">
+                <button x-on:click="mobileMenuOpen = true" type="button" class="bg-white p-2 inline-flex items-center justify-center focus:outline-none">
+                    {% render 'icon-menu' %}
+                </button>
+            </div>
+            <!-- NAVIGATION MENU -->
+            <nav class="hidden md:flex space-x-10">
 
+                {% for link in main_menu_linklist %}
+                    {% if link.links != blank %}
+                        {% assign link_handle = link.handle | replace: '-', '_' %}
+                        <div class="relative" x-data="{ {{ link_handle }}: false }">
+                            <button type="button" x-on:click="{{ link_handle }} = ! {{ link_handle }}" class="inline-flex items-center">
+                                {{ link.title }}
+                                {% render 'icon-dropdown' %}
+                            </button>
 
-      <div class="header__cart">
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M25.2359 19.1926H8.95273L9.77031 17.5273L23.3547 17.5027C23.8141 17.5027 24.2078 17.1746 24.2898 16.7207L26.1711 6.19062C26.2203 5.91445 26.1465 5.63008 25.966 5.41406C25.8768 5.30775 25.7656 5.22211 25.64 5.16309C25.5144 5.10407 25.3774 5.07308 25.2387 5.07227L7.95742 5.01484L7.80977 4.32031C7.7168 3.87734 7.31758 3.55469 6.86367 3.55469H2.63906C2.38307 3.55469 2.13756 3.65638 1.95654 3.8374C1.77552 4.01841 1.67383 4.26393 1.67383 4.51992C1.67383 4.77592 1.77552 5.02143 1.95654 5.20245C2.13756 5.38346 2.38307 5.48516 2.63906 5.48516H6.08164L6.72695 8.55312L8.31562 16.2449L6.27031 19.5836C6.1641 19.727 6.10012 19.8972 6.08562 20.075C6.07113 20.2528 6.10669 20.4312 6.18828 20.5898C6.35234 20.9152 6.6832 21.1203 7.04961 21.1203H8.7668C8.40071 21.6065 8.20298 22.1988 8.20352 22.8074C8.20352 24.3551 9.46133 25.6129 11.009 25.6129C12.5566 25.6129 13.8145 24.3551 13.8145 22.8074C13.8145 22.1977 13.6121 21.6043 13.2512 21.1203H17.6562C17.2902 21.6065 17.0924 22.1988 17.093 22.8074C17.093 24.3551 18.3508 25.6129 19.8984 25.6129C21.4461 25.6129 22.7039 24.3551 22.7039 22.8074C22.7039 22.1977 22.5016 21.6043 22.1406 21.1203H25.2387C25.7691 21.1203 26.2039 20.6883 26.2039 20.1551C26.2023 19.8994 26.0996 19.6546 25.9183 19.4743C25.737 19.294 25.4917 19.1927 25.2359 19.1926ZM8.35938 6.91797L24.1039 6.96992L22.5617 15.6051L10.1941 15.627L8.35938 6.91797ZM11.009 23.6715C10.5332 23.6715 10.1449 23.2832 10.1449 22.8074C10.1449 22.3316 10.5332 21.9434 11.009 21.9434C11.4848 21.9434 11.873 22.3316 11.873 22.8074C11.873 23.0366 11.782 23.2564 11.62 23.4184C11.4579 23.5805 11.2381 23.6715 11.009 23.6715ZM19.8984 23.6715C19.4227 23.6715 19.0344 23.2832 19.0344 22.8074C19.0344 22.3316 19.4227 21.9434 19.8984 21.9434C20.3742 21.9434 20.7625 22.3316 20.7625 22.8074C20.7625 23.0366 20.6715 23.2564 20.5094 23.4184C20.3474 23.5805 20.1276 23.6715 19.8984 23.6715Z" fill="black"/>
-        </svg>
-        <span class="header__cart-number cart-count">
-          1
-        </span>          
-      </div>
+                            <div 
+                            x-transition:enter="transition ease-out duration-300"
+                            x-transition:enter-start="opacity-0 translate-y-3"
+                            x-transition:enter-end="opacity-100 translate-y-0"
+                            x-transition:leave="transition ease-out duration-300"
+                            x-transition:leave-start="opacity-100 translate-y-0"
+                            x-transition:leave-end="opacity-0 translate-y-3"
+                            x-show="{{ link_handle }}" @click.away="{{ link_handle }} = false" class="absolute z-10 -ml-5 mt-5 transform px-2 w-screen max-w-md sm:px-0 lg:ml-0 lg:left-1/2 lg:-translate-x-1/2">
+                                <div class="shadow-lg border ring-black ring-opacity-5 overflow-hidden rounded-lg">
+                                    <div class="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
+                                        {% for childlink in link.links %}
+                                            <a href="{{ childlink.url }}" class="-m-3 p-3 flex items start rounded-lg hover:bg-gray-100">
+                                                <div class="ml-4">
+                                                    <p class="text-gray-900 text-base font-medium">
+                                                        {{ childlink.title }}
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <a href="{{ link.url }}" class="text-base text-gray-500 hover:text-gray-900">{{ link.title }}</a>
+                    {% endif %}
+                {% endfor %}
+            </nav>
+            <!-- CART BUTTON / ACCOUNT LINKS IF ENABLED -->
+            <div class="hidden md:flex items-center justify-end md:flex-1 space-x-5">
+                <button x-on:click="searchBarOpen = true" type="button" class="whitespace-nowrap text-base text-gray-500 hover:text-gray-900">
+                    {% render 'icon-search' %}
+                </button>
+                <a href="{{ routes.cart_url }}" class="whitespace-nowrap text-base text-gray-500 hover:text-gray-900">
+                    {% render 'icon-shopping-bag' %}
+                </a>
 
+                {% if shop.customer_accounts_enabled %}
+                    {% if customer %}
+                        <a href="{{ routes.account_url }}" class="text-base text-gray-500 hover:text-gray-900">account</a>
+                        {{ 'Log out' | customer_logout_link | replace: '<a', '<a class="text-base text-gray-500 hover:text-gray-900"' }}
+                    {% else %}
+                        {{ 'Log in ' | customer_login_link | replace: '<a', '<a class="text-base text-gray-500 hover:text-gray-900"' }}
+                        {{ 'Register' | customer_register_link | replace: '<a', '<a class="text-base text-gray-500 hover:text-gray-900"' }}
+                    {% endif %}
+                {% endif %}
+            </div>
 
+            <!-- MOBILE MENU CONTAINER -->
+            <div x-show="mobileMenuOpen" class="absolute z-10 top-0 inset-x-0 p-2 transform origin-top-left md:hidden">
+                <div class="shadow-lg rounded-lg ring-1 ring-black ring-opacity-5 bg-white w-full">
+                    <div class="p-5 divide-y-2 divide-gray-50">
 
+                        <!-- MOBILE MENU HEADER TITLE PLUS CLOSE BUTTON -->
+
+                        <div class="flex items-center justify-between pb-3">
+                            <div>
+                                <h1 class="text-lg text-gray-500">{{ section.settings.mobile_menu_title }}</h1>
+                            </div>
+                            <div class="-mr-2">
+                                <button x-on:click="mobileMenuOpen = false" type="button" class="bg-white rounded-md p-2 text-gray-500">
+                                    {% render 'icon-close' %}
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- NAVIGATION LINKS FOR MOBILE MENU -->
+                        <div class="pt-3">
+                            <nav class="grid gap-y-7">
+                                
+                                {% for link in main_menu_linklist %}
+                                    {% if link.links != blank %}
+                                    {% assign mobile_link_handle = link.handle | replace: '-', '_' %}
+                                        <div class="relative" x-data="{ {{ mobile_link_handle }}: false }">
+                                            <button x-on:click="{{ mobile_link_handle }} = ! {{ mobile_link_handle }}" type="button" class="text-base text-gray-500 hover:text-gray-900 flex items-center justify-between w-full">
+                                                <div>{{ link.title }}</div>
+                                                {% render 'icon-dropdown' %}
+                                            </button>
+
+                                            <div x-show="{{ mobile_link_handle }}" class="grid gap-y-7 py-3">
+                                                {% for childlink in link.links %}
+                                                    <a href="{{ childlink.url }}" class="-m-3 p-3 mt-2 flex items-center rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-50">
+                                                        <span class="ml-3 text-base font-medium text-gray-500">{{ childlink.title }}</span>
+                                                    </a>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <a href="{{ link.url }}" class="-m-3 p-3 flex items-center rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-50">
+                                            {{ link.title }}
+                                        </a>
+
+                                    {% endif %}
+                                    
+                                {% endfor %}
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</header>
+
+    <div x-show="searchBarOpen" class="w-full absolute top-0 bg-white border">
+        <button type="button" x-on:click="searchBarOpen = false" class="absolute top-0 right-0 mr-5 mt-5 text-gray-500">
+            {% render 'icon-close' %}
+        </button>
+        <div class="h-40 flex justify-center items-center">
+            <form action="{{ routes.search_url }}" method="get" class="flex-auto">
+                <div class="relative text-gray-500 px-10 border">
+                    <input type="search" name="q" placeholder="Search" class="w-full bg-white h-10 px-5 pr-10 rounded-full text-sm focus:outline-none">
+                    <button type="submit" class="absolute right-0 top-0 mt-2 mr-2 md:mr-20">
+                        {% render 'icon-search' %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 {% schema %}
-  {
-    "name": "t:sections.header.name",
-    "class": "section-header",
-
+{
+    "name": "Header",
     "settings": [
-      {
-        "type": "link_list",
-        "id": "menu",
-        "default": "main-menu",
-        "label": "t:sections.header.settings.menu.label"
-      }
+        {
+            "type": "text",
+            "id": "mobile_menu_title",
+            "default": "Menu",
+            "label": "Mobile Menu Title"
+        },
+        {
+            "type": "link_list",
+            "id": "menu",
+            "default": "main-menu",
+            "label": "Heading Navigation Menu"
+        }
     ]
-
-  }
+}
 {% endschema %}
